@@ -41,3 +41,5 @@ Typing this command will stop the currently running program.
 The application is a standard .Net 6 console appication. The following Nuget packages were installed:
 - Microsoft.Data.Sqlite - used for sqlite database creation and manipulation;
 - Newtonsoft.Json - used for save/load game state conversion;
+
+App was built using Visual Studio, however it is simple enough to be ran on Visual Studio Code as well.
