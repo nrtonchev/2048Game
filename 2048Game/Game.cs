@@ -54,8 +54,10 @@ namespace _2048Game
             Console.Clear();
             Console.WriteLine("Game has started!");
             Console.WriteLine();
+
             Console.WriteLine("Press the 'Insert' key anytime to save progress!");
             Console.WriteLine("Press the 'End' key to end game and return to main menu!");
+
             RegisterInputs();
         }
         private void RegisterInputs()
@@ -91,6 +93,7 @@ namespace _2048Game
                     Console.WriteLine("Select a name to save your game!");
                     Console.WriteLine("If left empty progress will not be saved!");
                     SaveGame();
+
                     Console.Clear();
                     grid.PrintGrid();
                 }
@@ -101,6 +104,7 @@ namespace _2048Game
                 }
                 else
                 {
+                    Console.Clear();
                     RegisterInputs();
                 }
             }
@@ -155,8 +159,11 @@ namespace _2048Game
             {
                 // Go back to main menu if no save games available
                 Console.WriteLine("No save games found!");
+                Console.WriteLine();
+
                 Console.WriteLine("Please press 'Enter' to go back to main menu.");
                 Console.ReadLine();
+
                 ResetGame();
             }
         }
@@ -173,16 +180,7 @@ namespace _2048Game
             var name = Console.ReadLine();
             if(name.Contains("delete "))
             {
-                var gameName = name.Split(' ');
-                if (savedGames.Contains(gameName[1]))
-                {
-                    Console.Clear();
-                    Database.DeleteSaveGame(gameName[1]);
-                    Console.WriteLine($"Save game {gameName[1]} was deleted!");
-                    Console.WriteLine("Please press 'Enter' to go back to load game screen.");
-                    Console.ReadLine();
-                }
-                LoadGame();
+                DeleteSaveGame(name, savedGames);
             }
             else if (savedGames.Contains(name))
             {
@@ -200,6 +198,23 @@ namespace _2048Game
                 SelectGameToLoad(savedGames);
             }
         }
+        private void DeleteSaveGame(string name, List<string> savedGames)
+        {
+            var gameName = name.Split(' ');
+            if (savedGames.Contains(gameName[1]))
+            {
+                Console.Clear();
+                var existingRecord = Database.CheckIfSaveGameNameExists(name);
+                if (existingRecord)
+                {
+                    Database.DeleteSaveGame(gameName[1]);
+                    Console.WriteLine($"Save game {gameName[1]} was deleted!");
+                    Console.WriteLine("Please press 'Enter' to go back to load game screen.");
+                    Console.ReadLine();
+                }
+            }
+            LoadGame();
+        }
         private void LoadState(string name)
         {
             var state = Database.GetSaveGameByName(name);
@@ -214,6 +229,7 @@ namespace _2048Game
         {
             Console.WriteLine("Please type in your name!");
             var name = Console.ReadLine();
+
             if (!string.IsNullOrEmpty(name))
             {
                 var existingRecord = Database.CheckIfHighScoreNameExists(name);
@@ -233,16 +249,23 @@ namespace _2048Game
             }
             else
             {
+                Console.Clear();
                 SaveScore();
             }
         }
         private void DisplayHighScores()
         {
             Console.Clear();
-            Console.WriteLine("High Scores");
+
+            Console.WriteLine("High Scores:");
+            Console.WriteLine();
+
             Database.GetHighScores();
+            Console.WriteLine();
+
             Console.WriteLine("Press 'Enter' to continue:");
             Console.ReadLine();
+
             ResetGame();
         }
         #endregion

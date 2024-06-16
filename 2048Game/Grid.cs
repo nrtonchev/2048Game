@@ -37,7 +37,7 @@
             {
                 for(int j = 0; j < gridTiles.GetLength(1); j++)
                 {
-                    Console.Write($" [{gridTiles[i, j].Value}] ");
+                    Console.Write($"{gridTiles[i, j].Value, 5}");
                 }
                 Console.WriteLine();
             }
@@ -106,6 +106,7 @@
             var rnd = new Random();
             var row = rnd.Next(0, gridTiles.GetLength(0));
             var col = rnd.Next(0, gridTiles.GetLength(1));
+
             if (gridTiles[row, col] == null)
             {
                 gridTiles[row, col] = new Tile(2);
@@ -117,7 +118,7 @@
         }
         private void GenerateIngameRandomTile()
         {
-            // Generate a single random number for a tile after action
+            // Generate a single random number for a tile after action is performed
             var rnd = new Random();
             bool isGenerated = false;
             while (!isGenerated)

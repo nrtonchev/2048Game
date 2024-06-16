@@ -7,7 +7,6 @@
             Value = 0;
         }
 
-
         public Tile(int value)
         {
             Value = value;    

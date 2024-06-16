@@ -1,11 +1,12 @@
 ﻿using Microsoft.Data.Sqlite;
+
 namespace _2048Game
 {
     public static class Database
     {
         public static void CreateDatabase()
         {
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -36,7 +37,7 @@ namespace _2048Game
         }
         public static void InsertSaveGame(string saveName, string saveGame)
         {
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -56,7 +57,7 @@ namespace _2048Game
         public static List<string> GetSaveGameNames()
         {
             var result = new List<string>();
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -81,7 +82,7 @@ namespace _2048Game
         public static string GetSaveGameByName(string name)
         {
             string result = string.Empty;
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -107,7 +108,7 @@ namespace _2048Game
         }
         public static void DeleteSaveGame(string name)
         {
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -125,7 +126,7 @@ namespace _2048Game
         public static bool CheckIfSaveGameNameExists(string name)
         {
             bool result = false;
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -151,7 +152,7 @@ namespace _2048Game
         }
         public static void InsertHighScore(string user, int highScore)
         {
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -170,7 +171,7 @@ namespace _2048Game
         }
         public static void GetHighScores()
         {
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -188,7 +189,7 @@ namespace _2048Game
                             {
                                 hasRows = true;
                             }
-                            Console.WriteLine($"{count}. Name: {reader["User"]}, Score: {reader["Score"]}");
+                            Console.WriteLine($"{count}. Score: {reader["Score"], 5}, Name: {reader["User"]}");
                             count++;
                         }
 
@@ -205,7 +206,7 @@ namespace _2048Game
         public static int GetHighestScore()
         {
             int result = 0;
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -230,7 +231,7 @@ namespace _2048Game
         public static bool CheckIfHighScoreNameExists(string name)
         {
             bool result = false;
-            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
@@ -254,5 +255,9 @@ namespace _2048Game
 
             return result;
         }
+
+        #region Private members
+        private static readonly string connectionString = "DataSource = 2048game.db";
+        #endregion
     }
 }
