@@ -303,19 +303,7 @@
                 if ((rowIndex < row && keyPress == ConsoleKey.UpArrow) ||
                     (rowIndex > row && keyPress == ConsoleKey.DownArrow))
                 {
-                    var currScore = startTile.Value + tileToCompare.Value;
-                    if (startTile.Value > 0)
-                    {
-                        score += currScore;
-
-                        if (score > highestScore)
-                        {
-                            highestScore = score;
-                        }
-                    }
-
-                    tileToCompare.Value = 0;
-                    startTile.Value = currScore;
+                    CalculateTiles(startTile, tileToCompare);
                 }
             }
             else if(keyPress == ConsoleKey.UpArrow && rowIndex < gridTiles.GetLength(0))
@@ -341,19 +329,7 @@
                 if ((colIndex < col && keyPress == ConsoleKey.LeftArrow) ||
                     (colIndex > col && keyPress == ConsoleKey.RightArrow))
                 {
-                    var currScore = startTile.Value + tileToCompare.Value;
-                    if (startTile.Value > 0)
-                    {
-                        score += currScore;
-
-                        if (score > highestScore)
-                        {
-                            highestScore = score;
-                        }
-                    }
-
-                    tileToCompare.Value = 0;
-                    startTile.Value = currScore;
+                    CalculateTiles(startTile, tileToCompare);
                 }
             }
             else if(keyPress == ConsoleKey.RightArrow && colIndex > 0)
@@ -367,6 +343,22 @@
                 colIndex++;
 
                 RowValueMove(row, col, keyPress);
+            }
+        }
+        private void CalculateTiles(Tile startTile, Tile tileToCompare)
+        {
+            var startTileValue = startTile.Value;
+            startTile.Value += tileToCompare.Value;
+            tileToCompare.Value = 0;
+
+            if (startTileValue > 0)
+            {
+                score += startTile.Value;
+
+                if (score > highestScore)
+                {
+                    highestScore = score;
+                }
             }
         }
         #endregion

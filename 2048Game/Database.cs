@@ -34,7 +34,6 @@ namespace _2048Game
                 connection.Close();
             }
         }
-
         public static void InsertSaveGame(string saveName, string saveGame)
         {
             using (var connection = new SqliteConnection("DataSource = 2048game.db"))
@@ -54,7 +53,6 @@ namespace _2048Game
                 connection.Close();
             }
         }
-
         public static List<string> GetSaveGameNames()
         {
             var result = new List<string>();
@@ -80,7 +78,6 @@ namespace _2048Game
 
             return result;
         }
-
         public static string GetSaveGameByName(string name)
         {
             string result = string.Empty;
@@ -89,8 +86,8 @@ namespace _2048Game
                 connection.Open();
 
                 // Get save game by name
-                string getAllSaveGameNames = "SELECT * FROM SAVED_GAME WHERE Name = @name";
-                using (var command = new SqliteCommand(getAllSaveGameNames, connection))
+                string getSaveGameByName = "SELECT * FROM SAVED_GAME WHERE Name = @name";
+                using (var command = new SqliteCommand(getSaveGameByName, connection))
                 {
                     command.Parameters.AddWithValue("@name", name);
 
@@ -108,17 +105,60 @@ namespace _2048Game
 
             return result;
         }
+        public static void DeleteSaveGame(string name)
+        {
+            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            {
+                connection.Open();
 
+                // Delete save game
+                string insertNewSaveGame = @"DELETE FROM SAVED_GAME WHERE Name = @saveName";
+                using (var command = new SqliteCommand(insertNewSaveGame, connection))
+                {
+                    command.Parameters.AddWithValue("@saveName", name);
+                    command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
+        }
+        public static bool CheckIfSaveGameNameExists(string name)
+        {
+            bool result = false;
+            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            {
+                connection.Open();
+
+                // Get save game by name
+                string getSaveGameByName = "SELECT * FROM SAVED_GAME WHERE Name = @name";
+                using (var command = new SqliteCommand(getSaveGameByName, connection))
+                {
+                    command.Parameters.AddWithValue("@name", name);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = true;
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+
+            return result;
+        }
         public static void InsertHighScore(string user, int highScore)
         {
             using (var connection = new SqliteConnection("DataSource = 2048game.db"))
             {
                 connection.Open();
 
-                // Create new save game
-                string insertNewSaveGame = @"INSERT INTO HIGH_SCORE(User, Score)
+                // Create new high score
+                string insertNewHighScore = @"INSERT INTO HIGH_SCORE(User, Score)
                         VALUES (@user, @score)";
-                using (var command = new SqliteCommand(insertNewSaveGame, connection))
+                using (var command = new SqliteCommand(insertNewHighScore, connection))
                 {
                     command.Parameters.AddWithValue("@user", user);
                     command.Parameters.AddWithValue("@score", highScore);
@@ -128,14 +168,13 @@ namespace _2048Game
                 connection.Close();
             }
         }
-
         public static void GetHighScores()
         {
             using (var connection = new SqliteConnection("DataSource = 2048game.db"))
             {
                 connection.Open();
 
-                // Create new save game
+                // Get all high scores ordered by score descending
                 string getAllHighScores = @"SELECT * FROM HIGH_SCORE ORDER BY Score DESC";
                 using (var command = new SqliteCommand(getAllHighScores, connection))
                 {
@@ -163,7 +202,6 @@ namespace _2048Game
                 connection.Close();
             }
         }
-
         public static int GetHighestScore()
         {
             int result = 0;
@@ -171,15 +209,42 @@ namespace _2048Game
             {
                 connection.Open();
 
-                // Create new save game
-                string insertNewSaveGame = @"SELECT * FROM HIGH_SCORE ORDER BY Score DESC LIMIT 1";
-                using (var command = new SqliteCommand(insertNewSaveGame, connection))
+                // Get top high score
+                string getTopHighScore = @"SELECT * FROM HIGH_SCORE ORDER BY Score DESC LIMIT 1";
+                using (var command = new SqliteCommand(getTopHighScore, connection))
                 {
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             result = int.Parse(reader["Score"].ToString());
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+
+            return result;
+        }
+        public static bool CheckIfHighScoreNameExists(string name)
+        {
+            bool result = false;
+            using (var connection = new SqliteConnection("DataSource = 2048game.db"))
+            {
+                connection.Open();
+
+                // Get high score by name
+                string getHighScoreByName = "SELECT * FROM HIGH_SCORE WHERE User = @name";
+                using (var command = new SqliteCommand(getHighScoreByName, connection))
+                {
+                    command.Parameters.AddWithValue("@name", name);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = true;
                         }
                     }
                 }
