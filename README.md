@@ -10,7 +10,7 @@ The following options are available to the player upon start:
 - Check all high scores using the 'high_score' command;
 - Exit the current running console with the 'quit' command';
 
-Upon initial start of the project, the program will create an sqlite database with a table for save games and a table for the high score.
+Upon initial start of the project, the program will create an sqlite database with a table for save games and a table for the high scores.
 
 # Command Details
 
@@ -19,7 +19,10 @@ Upon initial start of the project, the program will create an sqlite database wi
 The user is presented with the standard 4x4 grid for the game. Initially 2 random tiles are populated with the number 2. 
 The game is played using the arrow keys of the keyboard. After every arrow key press the game will automatically generate a single new random number (2, 4).
 
-When the game is over the user will be requested to enter a name by which the current score will be recorded in the high score table. The user will be requested to re-enter a new name if the current one is already in the database. The high score name is case sensitive.
+During game play, the user will be able to see the current score as well as the best score recorded in the high scores table.
+
+When the game is over (there are no more available actions) the user will be presented with a 'Game over' message and will be requested to enter a name by which the current score will be recorded in the high scores table. 
+The user will be requested to re-enter a new name if the current one is already in the database. The high score name is case sensitive.
 
 During play the user can perform two additional actions:
 - Save current progress by pressing the 'Insert' key on the keyboard. This action will request the user to enter a save game name in order to save the progress. Afterwards the game will be saved in the SAVE_GAME table of the previously created database. If the user specifies an already existing name, the app will request for him/her to add a new unique name. Names are case sensitive. The state of the game is saved in JSON format;
@@ -30,7 +33,7 @@ During play the user can perform two additional actions:
 The user will be presented with a list of save game names in order to choose which one he/she would like to be loaded. The save is chosen by typing the correct name in the console. If an incorrect name is typed the user will be requested to enter a correct name.
 If the user chooses not to proceed with saved game, he/she can type 'back' in the console instead will be returned to the start menu.
 
-The user can also delete save games by typing 'delete {save game name}' in the console. If the name typed is not correct the user will be redirected to the load game screen
+When in the load game menu, the user can also delete save games by typing 'delete {save game name}' in the console. If the name typed is not correct the user will be redirected to the load game screen
 
 3. Command 'high_score':
 
