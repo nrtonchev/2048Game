@@ -204,14 +204,28 @@ namespace _2048Game
             if (savedGames.Contains(gameName[1]))
             {
                 Console.Clear();
-                var existingRecord = Database.CheckIfSaveGameNameExists(name);
+                var existingRecord = Database.CheckIfSaveGameNameExists(gameName[1]);
                 if (existingRecord)
                 {
                     Database.DeleteSaveGame(gameName[1]);
-                    Console.WriteLine($"Save game {gameName[1]} was deleted!");
+                    Console.WriteLine($"Save game '{gameName[1]}' was deleted!");
                     Console.WriteLine("Please press 'Enter' to go back to load game screen.");
                     Console.ReadLine();
                 }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Save game with name: '{gameName[1]}' was not found in database!");
+                    Console.WriteLine("Please press 'Enter' to go back to load game screen.");
+                    Console.ReadLine();
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine($"Save game with name: '{gameName[1]}' was not found!");
+                Console.WriteLine("Please press 'Enter' to go back to load game screen.");
+                Console.ReadLine();
             }
             LoadGame();
         }

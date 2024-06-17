@@ -7,6 +7,7 @@
         private int highestScore;
         private int colIndex = 0;
         private int rowIndex = 0;
+        private bool shouldGenerateNewValue = false;
 
         public Grid() 
         {
@@ -46,6 +47,8 @@
         }
         public bool RegisterMove(ConsoleKey keyPress)
         {
+            shouldGenerateNewValue = false;
+
             // Perform grid data change based on the pressed arrow key
             switch (keyPress)
             {
@@ -65,7 +68,7 @@
 
             var gameOver = CheckIfGameIsOver();
 
-            if (!gameOver && CanAddTile())
+            if (shouldGenerateNewValue && !gameOver && CanAddTile())
             {
                 GenerateIngameRandomTile();
             }
@@ -361,6 +364,8 @@
                     highestScore = score;
                 }
             }
+
+            shouldGenerateNewValue = true;
         }
         #endregion
     }
